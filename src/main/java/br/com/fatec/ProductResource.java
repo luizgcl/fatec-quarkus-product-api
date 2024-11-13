@@ -133,6 +133,10 @@ public class ProductResource {
         description = "Produto alterado com sucesso"
     )
     @APIResponse(
+        responseCode = "400",
+        description = "Produto com dados inválidos para atualizar o produto"
+    )
+    @APIResponse(
         responseCode = "404",
         description = "Produto especificado não encontrado"
     )
