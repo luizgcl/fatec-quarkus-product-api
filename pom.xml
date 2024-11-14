@@ -64,6 +64,18 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-jib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-kubernetes</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
@@ -82,6 +94,7 @@
 
     <build>
         <plugins>
+            <!-- Plugin Quarkus para Gerar o Artefato e Deploy -->
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
@@ -98,6 +111,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Plugin Maven Compiler -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
@@ -105,6 +120,8 @@
                     <parameters>true</parameters>
                 </configuration>
             </plugin>
+
+            <!-- Plugin Maven Surefire -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>
@@ -115,6 +132,8 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+
+            <!-- Plugin Maven Failsafe -->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>
@@ -138,16 +157,18 @@
     </build>
 
     <profiles>
+        <!-- Profile Kubernetes -->
         <profile>
-            <id>native</id>
+            <id>kubernetes</id>
             <activation>
                 <property>
-                    <name>native</name>
+                    <name>kubernetes</name>
                 </property>
             </activation>
             <properties>
-                <skipITs>false</skipITs>
-                <quarkus.native.enabled>true</quarkus.native.enabled>
+                <quarkus.kubernetes.deploy>true</quarkus.kubernetes.deploy>
+                <quarkus.kubernetes.service-type>LoadBalancer</quarkus.kubernetes.service-type>
+                <quarkus.kubernetes-client.trust-certs>true</quarkus.kubernetes-client.trust-certs>
             </properties>
         </profile>
     </profiles>
